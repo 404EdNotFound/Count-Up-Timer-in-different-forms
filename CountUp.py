@@ -1,9 +1,8 @@
 from tkinter import *
-import time, math
+import time
 
 max_seconds = 10
-elapsedTime = 0
-startTime = 0
+startTime = elapsedTime = 0
 
 window = Tk()
 window.title("Count-up Stopwatch")
@@ -13,23 +12,100 @@ def runningTimer():
     startTime = time.time() - elapsedTime
     updateDisplay()
 
+def romanNumeralConversion(time):
+    textString = ""
+    char = ""
+    comparisonNumber = int(time)
+    while (comparisonNumber > 0):
+        if comparisonNumber >= 1000:
+            char = "M"
+            textString += char
+            comparisonNumber -= 1000
+        
+        elif comparisonNumber >= 900:
+            char = "CM"
+            textString += char
+            comparisonNumber -= 900
+        
+        elif comparisonNumber >= 500:
+            char = "D"
+            textString += char
+            comparisonNumber -= 500
+        
+        elif comparisonNumber >= 400:
+            char = "CD"
+            textString += char
+            comparisonNumber -= 400
+            
+        elif comparisonNumber >= 100:
+            char = "C"
+            textString += char
+            comparisonNumber -= 100
+            
+        elif comparisonNumber >= 50:
+            char = "L"
+            textString += char
+            comparisonNumber -= 50
+            
+        elif comparisonNumber >= 40:
+            char = "XL"
+            textString += char
+            comparisonNumber -= 900
+            
+        elif comparisonNumber >= 10:
+            char = "X"
+            textString += char
+            comparisonNumber -= 10
+            
+        elif comparisonNumber >= 9:
+            char = "IX"
+            textString += char
+            comparisonNumber -= 9
+
+        elif comparisonNumber >= 5:
+            char = "V"
+            textString += char
+            comparisonNumber -= 5
+
+        elif comparisonNumber >= 4:
+            char = "IV"
+            textString += char
+            comparisonNumber -= 4
+            
+        elif comparisonNumber >= 1:
+            char = "I"
+            textString += char
+            comparisonNumber -= 1
+            
+    return textString
+
 def updateDisplay():
     global elapsedTime
     elapsedTime = time.time() - startTime
     hours = minutes = seconds = 0
+    romanNumerals = ""
     
-    if int(elapsedTime) <= max_seconds:
-        minutes, seconds = divmod(int(elapsedTime), 60)
-        hours, minutes = divmod(int(minutes), 60)
-        stopwatchLabel.config(text = f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}")
+    # if int(elapsedTime) <= max_seconds:
+    #     minutes, seconds = divmod(int(elapsedTime), 60)
+    #     hours, minutes = divmod(int(minutes), 60)
+    #     stopwatchLabel.config(text = f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}")
+    
+    minutes, seconds = divmod(int(elapsedTime), 60)
+    hours, minutes = divmod(int(minutes), 60)
+    romanNumerals = romanNumeralConversion(elapsedTime)
+    
+    romanNumeralsLabel.config(text = romanNumerals)
+    stopwatchLabel.config(text = f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}")
     
     window.after(1000, updateDisplay)
 
 backgroundFrame = Frame(window, background = "black")
 stopwatchLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans MS", 40, "bold"), text = "00:00:00")
+romanNumeralsLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans Ms", 40, "bold"))
 
 runningTimer()
 backgroundFrame.pack()
 stopwatchLabel.pack()
+romanNumeralsLabel.pack()
 
 window.mainloop()
