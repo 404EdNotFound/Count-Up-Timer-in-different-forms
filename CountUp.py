@@ -30,11 +30,20 @@ def romanNumeralConversion(time):
 #Binary Convetion from Denary
 def binaryConverter(time):
     textString = ""
-    decimalPrefix = [4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1]
+    rootPower = 1
+    decimalPrefix = [4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1] # Static Approach for setting prefixes
+    dynamicDecialPrefix = []
     
     comparisonNumber = int(time)
     
-    for number in decimalPrefix:
+    while rootPower * 2 <= comparisonNumber: #Needed help with setting a dynamic approach for conversion to binary numbers
+        rootPower *= 2
+    
+    while rootPower > 0:
+        dynamicDecialPrefix.append(rootPower)
+        rootPower //= 2
+
+    for number in dynamicDecialPrefix:
         if comparisonNumber >= number:
             textString += "1"
             comparisonNumber -= number
@@ -49,7 +58,6 @@ def updateDisplay():
     hours = minutes = seconds = 0
     romanNumerals = timeFormat = ""
 
-    
     # Used for converting time
     # if int(elapsedTime) <= max_seconds:
     #     minutes, seconds = divmod(int(elapsedTime), 60)
