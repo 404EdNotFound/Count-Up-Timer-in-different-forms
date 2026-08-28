@@ -27,6 +27,22 @@ def romanNumeralConversion(time):
             
     return textString
 
+#Binary Convetion from Denary
+def binaryConverter(time):
+    textString = ""
+    decimalPrefix = [4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1]
+    
+    comparisonNumber = int(time)
+    
+    for number in decimalPrefix:
+        if comparisonNumber >= number:
+            textString += "1"
+            comparisonNumber -= number
+        
+        else:
+            textString += "0"
+    return textString
+
 def updateDisplay():
     global elapsedTime
     elapsedTime = time.time() - startTime
@@ -49,8 +65,10 @@ def updateDisplay():
         timeFormat = f"{int(minutes):02}:{int(seconds):02}"
         
     romanNumerals = romanNumeralConversion(elapsedTime)
+    binaryNumber = binaryConverter(elapsedTime)
 
     romanNumeralsLabel.config(text = romanNumerals)
+    binaryConverterLabel.config(text = binaryNumber)
     stopwatchLabel.config(text = timeFormat)
     
     window.after(1000, updateDisplay)
@@ -59,10 +77,12 @@ window.config(background = "black")
 backgroundFrame = Frame(window, background = "black")
 stopwatchLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans MS", 40, "bold"), text = "00:00:00")
 romanNumeralsLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans Ms", 40, "bold"))
+binaryConverterLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans Ms", 40, "bold"))
 
 runningTimer()
 backgroundFrame.pack()
 stopwatchLabel.pack()
 romanNumeralsLabel.pack()
+binaryConverterLabel.pack()
 
 window.mainloop()
