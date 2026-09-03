@@ -52,6 +52,22 @@ def binaryConverter(time):
             textString += "0"
     return textString
 
+def hexadecimalConverter(binaryNumber):
+    paddedBinaryNumber = ""
+    hexMap = {"0000": "0", "0001": "1", "0010": "2", "0011": "3", "0100": "4", "0101": "5", "0110": "6", "0111": "7", "1000": "8", "1001": "9", "1010": "A", "1011": "B", "1100": "C", "1101": "D", "1110": "E", "1111": "F"}
+    hexTextString = ""
+    
+    if len(binaryNumber) % 4 != 0:
+        paddedBinaryNumber = ("0" * (4 - (len(binaryNumber) % 4))) + binaryNumber
+    
+    else: paddedBinaryNumber = binaryNumber
+    
+    for count in range(0, len(paddedBinaryNumber), 4):
+        slice = paddedBinaryNumber[count:count+4]
+        hexTextString += hexMap[slice]
+    
+    return hexTextString
+
 def updateDisplay():
     global elapsedTime
     elapsedTime = time.time() - startTime
@@ -74,23 +90,30 @@ def updateDisplay():
         
     romanNumerals = romanNumeralConversion(elapsedTime)
     binaryNumber = binaryConverter(elapsedTime)
+    hexadecimalNumber = hexadecimalConverter(binaryNumber)
 
     romanNumeralsLabel.config(text = romanNumerals)
     binaryConverterLabel.config(text = binaryNumber)
+    hexadecimalConverterLabel.config(text = hexadecimalNumber)
     stopwatchLabel.config(text = timeFormat)
+    stopwatch_seconds_Label.config(text = int(elapsedTime))
     
-    window.after(1000, updateDisplay)
+    window.after(1, updateDisplay)
 
 window.config(background = "black")
 backgroundFrame = Frame(window, background = "black")
 stopwatchLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans MS", 40, "bold"), text = "00:00:00")
+stopwatch_seconds_Label = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans MS", 40, "bold"))
 romanNumeralsLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans Ms", 40, "bold"))
 binaryConverterLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans Ms", 40, "bold"))
+hexadecimalConverterLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans Ms", 40, "bold"))
 
 runningTimer()
 backgroundFrame.pack()
 stopwatchLabel.pack()
+stopwatch_seconds_Label.pack()
 romanNumeralsLabel.pack()
 binaryConverterLabel.pack()
+hexadecimalConverterLabel.pack()
 
 window.mainloop()
