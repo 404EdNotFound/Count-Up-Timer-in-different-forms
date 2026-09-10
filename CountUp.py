@@ -31,8 +31,9 @@ def romanNumeralConversion(time):
 def binaryConverter(time):
     textString = ""
     rootPower = 1
-    decimalPrefix = [4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1] # Static Approach for setting prefixes
     dynamicDecialPrefix = []
+    
+    # binaryNumber = bin(int(time)) #Used as the cleaner approach for later on
     
     comparisonNumber = int(time)
     
@@ -53,9 +54,10 @@ def binaryConverter(time):
     return textString
 
 def hexadecimalConverter(binaryNumber):
-    paddedBinaryNumber = ""
+    paddedBinaryNumber = hexTextString = ""
     hexMap = {"0000": "0", "0001": "1", "0010": "2", "0011": "3", "0100": "4", "0101": "5", "0110": "6", "0111": "7", "1000": "8", "1001": "9", "1010": "A", "1011": "B", "1100": "C", "1101": "D", "1110": "E", "1111": "F"}
-    hexTextString = ""
+    
+    # hexadecimalNumber = hex(int(binaryNumber)) #Used as the cleaner approach for later on
     
     if len(binaryNumber) % 4 != 0:
         paddedBinaryNumber = ("0" * (4 - (len(binaryNumber) % 4))) + binaryNumber
@@ -68,13 +70,28 @@ def hexadecimalConverter(binaryNumber):
     
     return hexTextString
 
+def octalConverter(binaryNumber):
+    paddedBinaryNumber = octalString = ""
+    octalMap = {"000": "0", "001": "1", "010": "2", "011": "3", "100": "4", "101": "5", "110": "6", "111": "7"}
+    
+    if len(binaryNumber) % 3 != 0:
+        paddedBinaryNumber = ("0" * (3 - (len(binaryNumber) % 3))) + binaryNumber
+    
+    else: paddedBinaryNumber = binaryNumber
+    
+    for count in range(0, len(paddedBinaryNumber), 3):
+        slice = paddedBinaryNumber[count:count+3]
+        octalString += octalMap[slice]
+    
+    return octalString
+
 def updateDisplay():
     global elapsedTime
     elapsedTime = time.time() - startTime
     hours = minutes = seconds = 0
     romanNumerals = timeFormat = ""
 
-    # Used for converting time
+    # Used for converting time under a certain limit
     # if int(elapsedTime) <= max_seconds:
     #     minutes, seconds = divmod(int(elapsedTime), 60)
     #     hours, minutes = divmod(int(minutes), 60)
@@ -91,10 +108,12 @@ def updateDisplay():
     romanNumerals = romanNumeralConversion(elapsedTime)
     binaryNumber = binaryConverter(elapsedTime)
     hexadecimalNumber = hexadecimalConverter(binaryNumber)
+    octalNumber = octalConverter(binaryNumber)
 
     romanNumeralsLabel.config(text = romanNumerals)
     binaryConverterLabel.config(text = binaryNumber)
     hexadecimalConverterLabel.config(text = hexadecimalNumber)
+    octalConverterLabel.config(text = octalNumber)
     stopwatchLabel.config(text = timeFormat)
     stopwatch_seconds_Label.config(text = int(elapsedTime))
     
@@ -107,13 +126,16 @@ stopwatch_seconds_Label = Label(backgroundFrame, background = "black", foregroun
 romanNumeralsLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans Ms", 40, "bold"))
 binaryConverterLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans Ms", 40, "bold"))
 hexadecimalConverterLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans Ms", 40, "bold"))
+octalConverterLabel = Label(backgroundFrame, background = "black", foreground = "white", font = ("Comic Sans Ms", 40, "bold"))
 
 runningTimer()
+
 backgroundFrame.pack()
 stopwatchLabel.pack()
 stopwatch_seconds_Label.pack()
 romanNumeralsLabel.pack()
 binaryConverterLabel.pack()
 hexadecimalConverterLabel.pack()
+octalConverterLabel.pack()
 
 window.mainloop()
