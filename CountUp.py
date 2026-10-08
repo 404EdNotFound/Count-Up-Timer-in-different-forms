@@ -1,7 +1,6 @@
 from tkinter import *
 import time
 
-# max_seconds = 10
 startTime = elapsedTime = 0
 
 window = Tk()
@@ -49,8 +48,7 @@ def binaryConverter(time):
             textString += "1"
             comparisonNumber -= number
         
-        else:
-            textString += "0"
+        else: textString += "0"
     return textString
 
 def hexadecimalConverter(binaryNumber):
@@ -73,6 +71,8 @@ def hexadecimalConverter(binaryNumber):
 def octalConverter(binaryNumber):
     paddedBinaryNumber = octalString = ""
     octalMap = {"000": "0", "001": "1", "010": "2", "011": "3", "100": "4", "101": "5", "110": "6", "111": "7"}
+    
+    #octalNumber = oct(int(binaryNumber)) #Used as the cleaner approach for later on
     
     if len(binaryNumber) % 3 != 0:
         paddedBinaryNumber = ("0" * (3 - (len(binaryNumber) % 3))) + binaryNumber
@@ -99,11 +99,9 @@ def updateDisplay():
     minutes, seconds = divmod(int(elapsedTime), 60)
     hours, minutes = divmod(int(minutes), 60)
     
-    if hours > 0:
-        timeFormat = f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}"
+    if hours > 0: timeFormat = f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}"
     
-    else:
-        timeFormat = f"{int(minutes):02}:{int(seconds):02}"
+    else: timeFormat = f"{int(minutes):02}:{int(seconds):02}"
         
     romanNumerals = romanNumeralConversion(elapsedTime)
     binaryNumber = binaryConverter(elapsedTime)
